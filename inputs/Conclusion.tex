@@ -1,0 +1,21 @@
+\section{Discussion}
+Throughout all 3 models, we can say that further dated options are less accurate. The Root Mean Squared Error (RMSE) for the 90-300 days till expiry options are significantly higher than the other two tested time periods. 
+
+We see that the MLP model is the most accurate because the RMSE is consistently lower across all 3 time periods and moneyness options tested. 
+
+Based on our results, we see that the further dated options were also less accurate. This is what we expect for two reasons:
+\begin{enumerate}
+    \item We used the 3 month Treasury interest rate.
+    \item Far dated options (90-300 DTE) are more difficult to model and have more variability.
+\end{enumerate}
+
+At the Money (ATM) options were the least accurate when compared to In the Money (ITM) and Out the Money (OTM). We believe this happens for two reasons:
+\begin{enumerate}
+    \item They have the greatest sample size, meaning that more variability can occur in the option pricing. 
+    \item These options are the most sensitive to price movements. A small move in price, either up or down, can mean they expire worthless.
+\end{enumerate}
+\subsection{Most Accurate Model}
+MLP is the most accurate because the RMSE is the least consistently, across the OTM, ATM, ITM options, and also for the 3 tested time periods. We believe that using the Yang-Zhang Volatility model, one of the most accurate volatility models used by quant firms to account for overnight jumps and a recent advancement in volatility models, in cumulation with a neural network allowed the option pricing data to be trained and tested accurately alongside the historical AAPL options data. Before we ran the models, we hypothesized that the MLP would be the most accurate model as the metrics behind the testing are more extensive compared to the Black-Scholes and Monte Carlo Simulations. 
+ 
+\section{Conclusion}
+Our goal was to to simulate a model which predicts the price of a European Call option.  We derived the Black-Scholes Partial Differential Equation, solve it into an equation to price call options, and simulate the model using Python. We also explored the use of the Monte Carlo Simulation using python and applied it to our model. In addition, we also used a Multi-layer Perceptron Neural Network and compared it with the other two models. There are some limitations to our research. Like any mathematical model used to simulate the real world, assumptions had to be made in order to simplify the complex reality of the stock market. An example of an assumption we made for the Black-Scholes Model is that we assumed short term interest rates were constant and that the stock paid no dividends. Another assumption we made in the Monte Carlo Model was that the returns of the stock were log-normally distributed. All these assumptions were made in the effort of making it possible to model the intricate nature of the financial world using mathematics and code. 

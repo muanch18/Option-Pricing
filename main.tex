@@ -1,0 +1,57 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{url}
+
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ margin=25mm
+ }
+\usepackage{biblatex}
+\usepackage{subfigure}
+\usepackage{url}
+
+
+\addbibresource{bibliography.bib}
+
+\title{Mathematical Models for European Option Pricing}
+\author{David Lupea, Anush Musthyala, Pablo Parra, Kevin Ng, Yuqi Yang }
+\date{May 18 2022}
+
+\begin{document}
+
+
+\maketitle
+\tableofcontents 
+\newpage
+
+\section{Introduction}
+In this paper, we outline 3 models for pricing European Call Options: The Black-Scholes Formula, a Monte Carlo simulation, and a Multi-layer Perceptron Neural Network and compare their efficacy across different levels of moneyness and time until expiry.
+
+\subsection{Assumptions}
+\begin{enumerate}
+    \item We look at Apple Inc. (AAPL) options for the year 2021 expiring on or before 4/27/2022. We look at AAPL since it has a highly liquid and diverse options chain. We look at data from 2021 since it was easily available and freely downloadable.
+    \item To simplify the modeling process, we only looked at call options. Although the pricing is relatively symmetric, put pricing would yield slightly different results. 
+    \item For risk-free rate, we used the historical three month Treasury interest rate. Although we should theoretically use the interest rate from the bond with the closest maturity to the option, we found that using the three month interest rate was simpler. As a result, we expect that further dated options will be less accurately priced than they otherwise would be.
+    \item In our Monte Carlo Simulations and Black-Scholes formula, we use Apple's dividend yield of 0.63\% to discount from the risk-free rate. 
+\end{enumerate}
+
+
+
+\input{inputs/OptionsIntroduction.tex}
+\input{inputs/Black-Scholes_Introduction.tex}
+\input{inputs/MonteCarloIntroduction.tex}
+\input{inputs/MLIntroduction.tex}
+\input{inputs/Procedure.tex}
+\input{inputs/Conclusion}
+
+\appendix
+
+\include{ResultsTables}
+
+%\bibliographystyle{plain} % We choose the "plain" reference style
+\printbibliography
+
+\end{document}

@@ -1,0 +1,69 @@
+\section{Monte Carlo Simulation Introduction}
+A Monte Carlo Simulation is a mathematical technique that enables us to take risk into account when faced with uncertainty. The model is used in situations with stochastic outcomes and the result is a probability distribution, providing decision-makers with a range of possibilities, and the likelihood of occurrence for every course of action. The model has a wide range of applications in the real-world, mainly in fields involving a large number of random factors where predicting future outcomes becomes highly complex, such as finance and engineering. \cite{MCDS}
+
+We use a Monte Carlo Simulation to model the movement of a stock. Some considerations when building this model include:
+\begin{itemize}
+\item  The ending price of the stock. 
+\item  External factors such as volatility and interest rates.
+\item  Geometric Brownian Motion model. This model assumes changes in stock prices/returns are independent and thus cannot use past events to predict the future, which we then by run many times using the inputs and provide a distribution of results.
+\end{itemize}
+Some limitations to this model include the tedious and time consuming implementation which requires thousands of iterations. Additionally, like any other mathematical model used to simulate the real world, assumptions have to be made in order to simplify reality. For example, most Monte Carlo Simulations used to predict the return of a stock assume that returns are normally distributed.
+\\
+We use a Monte Carlo Simulation to simulate stock movements, which will give us the expected payoff of a call option. 
+
+
+\subsection{Derivation}
+To begin, the Geometric Brownian Motion model was used to generate many possible future stock prices using the following stochastic differential equation\cite{MCS}:
+
+\begin{equation}
+   \frac{dS_{t}}{S_{t}} = \mu dt + \sigma dW_{t}
+\end{equation}
+where:
+
+$$S_{t} - represents\; the\; price\; of\; the\; stock\; at\; any\; time\; t$$
+$$\mu - drift$$
+$$\sigma - volatility$$
+$$W_{t} - Brownian\; motion\; (stochastic\; term)$$
+$$dS_{t} - change\; in\; price\; of \;the \;stock\; over\; time$$
+$$dt - change \;in \;time$$
+
+ 
+We can integrate equation (2) to obtain:
+\begin{equation}
+   S_{T} = S_{t}+ r(T-t) + \sigma (W_{T}-W_{t})
+\end{equation}
+ 
+ where:
+ \begin{equation} 
+ W_{T}-W_{t} \sim \mathcal{N}(0,T-t)
+ \end{equation}
+ 
+ This tells us that the term $\sigma dW_{t}$ is normally distributed with mean \textit{0}, variance "$T-t$ and a non-zero standard deviation. 
+ 
+\paragraph{}
+ 
+Brownian Motion follows both the Markov and Martingale property. The Markov  theorem (Memorylessness) explains how the value of a stochastic process in the future only depends on the current value, whereas the Martingale explains how the conditional expectation of the value depends on the present value, provided information about historical values. Using Geometric Brownian Motion, the future price of the stock will be log normally distributed. 
+\paragraph{}
+ 
+The solution to equation (2) can be achieved using Ito's lemma, which leads to:
+ 
+\begin{equation}
+    \ln{S_{t} = \ln{S_{o} + \left(\mu - \frac{1}{2}\sigma^2\right)dt+\sigma dW_{t}}}
+\end{equation}
+  Which simplifies to:
+  \begin{equation}
+    S_{t} = S_{o}e^{\left(\mu - \frac{1}{2}\sigma^2\right)dt+\sigma dW_{t}}
+  \end{equation}
+ 
+ where $S_{o}$ is the initial stock price.
+
+ \paragraph{}
+ Next, these parameters will be assigned values including the initial price, total time, change in time, drift term and the volatility value. The volatility was found using historical and Yang-Zhang volatility, whereas the average historical return was used to find the drift.  Repeated use of this formula can then be used to generate a significant number of stochastic price paths between current and expiration date.
+ 
+  \paragraph{}
+  
+Once the price paths have been simulated, we take the expected extrinsic value of the option, which will be the fair value of the option. From the derivation of the Black-Scholes Formula, a Monte Carlo simulation should converge to the price given by Black-Scholes formula for a large number of trials.
+
+
+
+

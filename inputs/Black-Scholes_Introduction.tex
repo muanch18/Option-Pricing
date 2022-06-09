@@ -1,0 +1,198 @@
+%\documentclass{article}
+%\usepackage[utf8]{inputenc}
+%\usepackage{graphicx}
+%\usepackage{amsmath}
+%\begin{document}
+
+\section{Black Scholes Introduction}
+
+\subsection{Brief History}
+In 1973, Fischer Black and Myron Scholes published the Black-Scholes Model in an article named “The Pricing of Options and Corporate Liabilities.” Their objective was to create a riskless portfolio by buying and selling European options in just the “right way.”  Today, this model is a widely applied mathematical model in the modern financial world and it serves as the foundation for many investment banks and hedge fund strategies.
+
+\subsection{Assumptions}
+The Black-Scholes model assumes ideal market conditions. The model assumes short-term interest rates are constant, stocks pay no dividends, there are no transaction costs for stocks, one can borrow fractions of a stock, and short selling is allowed. The model also assumes the underlying stock price follows a geometric Brownian motion with constant volatility. Geometric Brownian motion is a continuous-time stochastic process where the random quantity follows an exponential trend with random drifts away from the trend. More precisely, the ratio between current and initial stock price follows a random log-normal distribution. The differential equation that models this behavior is the following:
+
+\[ dS = \mu Sdt + \sigma Sdz\]
+
+
+$$S - stock \;price$$
+$$\mu - expected\;value\;of\;stock\;price$$
+$$\sigma - standard\; deviation\; of\; stock\; price$$
+$$t - time$$ 
+$$z - standard\; Brownian\; Motion$$
+
+
+\subsection{Input}
+The Black-Scholes model takes into account five inputs: strike price, current stock price, days until expiration, risk-free rate or the interest rate on US Treasury Bonds, and the underlying stock's volatility. Moreover, the model only takes into account European Options exercised at the date of maturity. \cite{BS}
+
+% \begin{itemize}
+% \item Option - Contract giving the owner the right to buy or sell an underlying asset at a specific price and date
+% \item Strike Price - price that a buyer assigns to an option upon purchase
+% \item Expiration Time - Deadline one can call or sell a particular option by 
+% \item Risk-free Interest Rate - The US Treasury Bill interest rate
+% \item Volatility - fluctuation or randomness of stock price 
+% \end{itemize}
+
+
+
+\subsection{Derivation}
+The Black-Scholes model is derived from a partial-differential equation. We will derive this model using Ito's Lemma and solve the partial differential equation for the model. First we have the stochastic process of an underlying stock modelled using the Geometric Brownian Motion \cite{BSDerivation}:
+
+\[ \frac{dS}{S} = \mu dt + \sigma dW\]
+
+
+$$S - stock\; price$$
+$$\mu - average\; growth\; rate\; of\; stock\; price$$
+$$t - time$$
+$$dW - sample\; from\; standard\; normal\; distribution$$
+$$\sigma - standard\; deviation\; of\; stock\; price$$
+
+
+Next, Ito's Process is a generalized Wiener's process modeled by the formula:
+
+\[ S_t = S_0 + \int_{0}^{t}a_{s}ds + \int_{0}^{t}b_{s}dW_{s}\]
+
+
+$$S_t - stock\; price\; at\; time\; t$$
+$$S_0 - stock \;price\; at\; time\;0$$
+$$a,b - parameter\; functions$$
+$$ W - Wiener's\; process $$
+$$\int_{0}^{t}a_{s}ds - interest\; over\; time\; [0,t]$$
+$$\int_{0}^{t}b_{s}dW_{s} - randomness $$
+
+
+
+After, we will differentiate this equation on both sides to obtain:
+
+\[ dS_t = a_{t}dt + b_{t}dW_{t}\] such that $x_0 = x$
+
+\vspace{.5mm}
+
+Now, let's generalize the process such that $a,b$ could be a function of the stock price:
+
+\[ dS_t = S +  a(S_t, t)dt + b(S_t, t)dW_t \]
+
+
+Ito's lemma states that if $S_t$ is a Wiener's process and $G(S_t, t)$ is a function of $S_t$ then $G$ also follows the Wiener's process in this form:
+
+\[ dG = \left(\frac{\partial G}{\partial x}a + \frac{\partial G}{\partial t} + \frac{1}{2}\frac{\partial^2G}{\partial x^2}b^2\right)dt + \frac{\partial G}{\partial x}bdz\]
+
+Using the geometric Brownian motion formula, we can find $G(x_t, t)$ for $a = \mu S$ and $b = \sigma S$ where in this case, $G$ will be substituted by $V$, the value of the option.
+
+\[ dV = \left(\frac{dV}{dS}\mu S + \frac{dV}{dS} + \frac{1}{2}\frac{d^2V}{dS^2}\sigma^2S^2\right)dt + \frac{dV}{dS}\sigma SdW\]
+
+
+The riskless aspect of Black-Scholes is derived from the concept of a delta hedged portfolio. A delta hedged portfolio allows the holder to reap short term benefits while holding a long term position in the stock market. This is achieved by outing portions of a long term position to hedge losses made by short term positions. The delta hedge portfolio is described using the formula: 
+
+\[\Pi = -V + \int \frac{dV}{ds}ds\] where $\Pi$ is the value of the portfolio and $V$ is the value of the option.  
+
+Now, the profit and loss of the value of the option over time period [$t$, $t + \Delta t$] is
+
+\[ \Delta \Pi = -\Delta V + \frac{dV}{dS}\Delta S \] 
+
+Let us discretize the Geometric Brownian motion and the valuation formula we derived using Ito's lemma: 
+
+\[ \Delta S = Sv \Delta t + S\sigma \Delta W\]
+\[ \Delta V = \left(\frac{\partial V}{\partial S}\mu S + \frac{\partial V}{\partial S} + \frac{1}{2}\frac{\partial^2V}{\partial S^2}\sigma^2S^2\right)\Delta t + \frac{\partial V}{\partial S}\sigma S \Delta W\]
+
+Substitute these discretized equations into the profit-and-loss delta hedge equation: 
+
+\[ \Delta \Pi = \left(- \frac{\partial V}{dt} - \frac{1}{2} \sigma^2 s^2 \frac{\partial^2V}{\partial S^2}\right)\Delta t\]
+
+Notice how $\Delta W$, the uncertainty, has been eliminated from the equation. The portfolio is effectively 'riskless' now. Thus, the rate of return of this portfolio must equal to any other riskless instrument. This can be shown in the following model:
+
+\[ r \Pi \Delta t = \Delta \Pi \] where r is the annual riskless interest rate 
+
+Substituting $\Pi$ and $\Delta \Pi$, we have 
+
+\[ r\left(-V + S\frac{dV}{dS}\right)\Delta t = \left(- \frac{dV}{dt} - \frac{1}{2} \sigma^2 s^2 \frac{d^2V}{dS^2}\right)\Delta t\]
+
+
+Simply the equation above and we arrive at the Black-Scholes PDE: 
+
+\begin{equation}
+	\frac{\partial \mathrm V}{ \partial \mathrm t } + \frac{1}{2}\sigma^{2} \mathrm S^{2} \frac{\partial^{2} \mathrm V}{\partial \mathrm V^2}
+	+ \mathrm r \mathrm S \frac{\partial \mathrm V}{\partial \mathrm S}\ -
+	\mathrm r \mathrm V = 0 
+\end{equation}
+
+To solve the PDE, recall its boundary conditions:
+\[C(0,t) = 0\: for\: all\: t\]
+\[C(S,t) ~ S-Ke^{-r(T-t)} \:as\: S\rightarrow\infty\]
+\[C(S,T) = max\{S-K,0\}\]
+The first two conditions are possible as \textit{S} goes to 0 or infinity, and the last condition computes the value of the option at the time it matures. 
+\newline
+The PDE is a Cauchy-Euler equation, and can be transformed into a diffusion equation when we do change-of-variable.
+\[\tau = T-t\]
+\[u=Ce^{r\tau}\]
+\[x=\ln\left(\frac{S}{K}\right)+(r-\frac{1}{2}\sigma^2)\tau\]
+Then the PDE turns into a diffusion equation:
+\[\frac{\partial u}{\partial \tau} = \frac{\partial^2u}{\partial x^2}\]
+And the terminal condition 
+\[C(S,T)=max\{S-K,0\}\] is now
+\[u(x,0)=u_0(x):=K(e^{max\{x,0\}}-1)=K(e^x-1)H(x)\]
+where $H(x)$ is the Heaviside step function, which corresponds to enforcement of the boundary data when $t=T$.
+Using the convolution method to solve the diffusion equation, we have
+\[u(x,\tau) = \frac{1}{\sigma\sqrt{2\pi\tau}} \int_{-\infty}^{\infty}u_0(y)\exp\left[-\frac{(x-y)^2}{2\sigma^2\tau}\right]dy\]
+which simplifies to 
+\[u(x,\tau)=Ke^{x+\frac{1}{2}\sigma^2\tau}N(d_1)-KN(d_2)\]
+
+where $N(\cdot)$ is the standard normal cumulative distribution function,
+\[d_1 = \frac{1}{\sigma\sqrt{\tau}}\left[\left(x+\frac{1}{2}\sigma^2\tau\right)+\frac{1}{2}\sigma^2\tau\right]\]
+\[d_2 = \frac{1}{\sigma\sqrt{\tau}}\left[\left(x+\frac{1}{2}\sigma^2\tau\right)-\frac{1}{2}\sigma^2\tau\right]\]
+
+Reverting back to the original variables, substituting $X$ for $K$, we can derive the call and put function.
+\\
+
+The Black-Scholes call formula:
+\[C(S,t) = SN(d_1) - Xe^{-r(T-t)}N(d_2)\]
+
+
+
+The Black-Scholes put formula:
+\[P(S,t) = Xe^{-r(T-t)}N(-d_2)-SN(-d_1)\]
+
+
+\subsection{The Model}
+
+\begin{align*}
+C_{call} &= SN(d_1) - Xe^{-rT}N(d_2) \\
+P_{put} &= Xe^{-rT}N(-d_2) - SN(-d_1) \\ 
+d_1 &= \frac{log(S/X) + (r + \frac{\sigma^2}{2})}{\sigma\sqrt{T}} \\
+d_2 &= d_1 - \sigma\sqrt{T}
+\end{align*}
+
+
+$$C_{call} - call\; price$$
+$$P_{put} - put\; price$$
+$$S - current\; option\; price\; of \;stock $$
+$$X - strike\; price\; of\; stock$$ 
+$$r - annual\; risk-free\; interest\; rate$$
+$$T - time\; left\; until\; expiration (yr)$$
+$$\sigma - annualized\; volatility\; of\; stock$$ 
+$$N - standard\; normal\; cumulative\; distribution\; function$$
+
+
+
+
+
+% \subsection{Black-Scholes Simulation}
+
+% To determine the fair option price from the Black-Scholes model for put and call options, we calculate the factors $d_1$ and $d_2$ using the general Black Scholes formula derived above. \\
+
+% We then simulate this model across the AAPL option dataset, isloating for moneyness and time until expiry. used for all three models and determine the Root Squared Mean Error (RSME) in terms of USD of the project option price. The RSME must be differentiated between intervals of moneyness, time intervals,and volume type because each interval might have different dynamics when it comes to pricing. 
+
+
+% This code will output the BS RSME for the AAPL stock based on the mentioned intervals and volume types. 
+% This is not useful either
+
+% \section{Results \& Analysis}
+
+% The RSME for the fair option price projected by the BS model has been categorized by volume type, moneyness, and time. The output of the simulated program is shown in the figure above and it has been categorized accordingly. The results showed that the RSME ranges from approximately 0.28 USD to 1.13 USD. This shows that the BS model was fairly accurate since AAPL option prices range from 80 to 200. 
+
+% This is innacurate. We will put discussion in conclusion
+
+
+
+
+%\end{document}

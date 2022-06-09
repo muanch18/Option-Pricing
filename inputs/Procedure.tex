@@ -1,0 +1,26 @@
+\section{Procedure}
+\subsection{Data}
+We downloaded and imported one year of Apple Inc.'s option data as our dataset and cleaned the data by removing null values. We then pulled three month treasury rates as well as the underlying stock's data. With this, we populated each row of our data with the risk-free rate as well as the 15, 30, and 60 day volatilities and the 30-day-lookback Yang-Zhang volatility\cite{underlying}. As our output variable, we tried to estimate the midpoint of the bid-ask spread on each option as the fair market price of the option.
+\\ \\
+In order to isolate for different option dynamics, we also filtered the data into three levels of moneyness, 
+\begin{enumerate}
+    \item $0.2 < \frac{S}{K} < 0.8 $ (Deep Out the Money)
+    \item $0.8 < \frac{S}{K} < 1.2 $ (At the Money)
+    \item $1.2 < \frac{S}{K} < 1.8 $ (Deep In the Money)
+\end{enumerate}
+and three levels of time until expiry
+\begin{enumerate}
+    \item $0 < T < 30 $
+    \item $30 < T < 90 $
+    \item $90 < T < 300 $
+\end{enumerate}
+
+
+\subsection{Black-Scholes}
+For each row of the data, we ran the Black-Scholes formula with a different volatility model and compared it with the midpoint of the bid/ask spread. From that, we found and tabulated the root mean squared error.
+
+\subsection{Monte Carlo}
+As we did with Black-Scholes, we ran the Monte Carlo simulation by generating 2000 paths the stock could take until expiry and finding the option's extrinsic value on each one. By taking the expected value of these results, we found the fair price of the option and compared it to the bid/ask midpoint. 
+
+\subsection{MLP}
+For our MLP model, we performed a 80-20 train-test split on our normalized data and trained the model until convergence. We then predicted values for our testing data and found the root mean squared error of our predictions.
